@@ -16,6 +16,11 @@ class GaitSeq:
     smoothedStepSeq = []
     standAndStraddle = []
 
+    gaitSeqID = ''
+    gaitSeqWear = ''
+    gaitSeqWearID = ''
+    gaitSeqAngle = ''
+
     _gaitSeqFilePath = ''
 
     def __init__(self, gaitSeqFilePath):
