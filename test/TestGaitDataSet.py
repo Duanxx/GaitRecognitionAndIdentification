@@ -5,7 +5,7 @@
 '''
 
 from GaitDataSet import GaitDataSet
-
+from matplotlib import pyplot as plt
 import cv2
 
 gds = GaitDataSet()
@@ -17,6 +17,7 @@ gds.loadDataSet(gaitDataSetFilePath)
 gds.findAllFiles()
 
 print gds._numGaitSeq
+
 
 for index in xrange(100):
     print gds.data[index]._gaitIndex

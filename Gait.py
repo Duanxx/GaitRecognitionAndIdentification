@@ -17,34 +17,61 @@ class Gait:
         self._heightStart = 0
         self._heightEnd = 0
         self._height = 0.0
+        self._step = 0.0
         self._gaitImageFrame = gaitImageFrame.copy()
-
 
         self.extractGaitHight()
 
+        self.extractWidthVector()
 
-    def extractWidthVector(self):
-        """
-
-        :return:
-        """
+        self._gaitImageFrame = []
 
     @property
-    def heihgt(self):
+    def height(self):
         return self._height
+
+    def extractWidthVector(self):
+
+        for row in self._gaitImageFrame:
+
+            startIndex, endIndex = self.findFirstAndLastNotZeroValueIndex(row)
+            self.widthVector.append(endIndex - startIndex)
 
     def extractGaitHight(self):
         verticalSum = np.sum(self._gaitImageFrame, 1)
-        verticalLen = len(verticalSum)
-
-        for index in range(verticalLen):
-            if verticalSum[index] > 0:
-                self._heightStart = index
-                break
-
-        for index in range(verticalLen):
-            if verticalSum[verticalLen - index - 1]:
-                self._heightEnd = verticalLen - index - 1
-                break
+        
+        self._heightStart, self._heightEnd = \
+            self.findFirstAndLastNotZeroValueIndex(verticalSum)
 
         self._height = self._heightEnd - self._heightStart
+
+        # force convert to int, save the memory
+        self._step = int(np.amax(verticalSum[
+                                 self._heightEnd - int(self._height/3):
+                                 self._heightEnd]))
+
+    def findFirstAndLastNotZeroValueIndex(self, inputList):
+        inputLen = len(inputList)
+
+        startIndex = 0
+        endIndex = 0
+
+        # if inputList is empty return directly
+        if inputLen == 0:
+            return startIndex, endIndex
+
+        inputListCopy = inputList.copy()
+
+        # find the first not zero point in inputList
+        for index in range(inputLen):
+            if inputListCopy[index] > 0:
+                startIndex = index
+                break
+
+        # find the last not zero point in inputList
+        for index in range(inputLen):
+            if inputListCopy[inputLen - index - 1] > 0:
+                endIndex = inputLen - index - 1
+                break
+
+        return startIndex, endIndex

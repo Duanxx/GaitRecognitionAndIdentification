@@ -31,7 +31,7 @@ class GaitDataSet:
             self._gaitDataSetPath = dataSetFilePath
             print dataSetFilePath
 
-    def findAllFiles(self):
+    def findAllFiles(self,showImage=False):
         for root, dirs, files in os.walk(self._gaitDataSetPath):
 
             if len(files) == 0:
@@ -39,8 +39,8 @@ class GaitDataSet:
             elif os.path.basename(root) == 'silhouettes':
                 continue
             else:
-                self.data.append(GaitSeq(root))
+                self.data.append(GaitSeq(root, showImage))
                 self._numGaitSeq += 1
 
-                if self._numGaitSeq == 10:
+                if self._numGaitSeq == 1:
                     break

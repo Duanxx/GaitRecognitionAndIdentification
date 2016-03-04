@@ -6,12 +6,13 @@
 
 import os
 import cv2
+import numpy as np
 
 from Gait import Gait
 
 class GaitSeq:
 
-    def __init__(self, gaitSeqFilePath):
+    def __init__(self, gaitSeqFilePath,showImage=False):
         """
 
         :return:
@@ -29,7 +30,7 @@ class GaitSeq:
         self.gaitSeqWearID = ''
         self.gaitSeqAngle = ''
 
-        self.loadGaitSeq()
+        self.loadGaitSeq(showImage)
 
     def extractGaitSeqProfile(self, GaitSeqRootFilePath):
 
@@ -61,8 +62,13 @@ class GaitSeq:
                     # read image in graysacle
                     gaitFrame = cv2.imread(filePath, 0)
 
+                    # if file is broken
+                    if not isinstance(gaitFrame, np.ndarray):
+                        print filePath, ' is broken'
+                        break
+
                     # binary image
-                    ret, gaitFrame = cv2.threshold(gaitFrame,
+                    ret, gaitFrameBinary = cv2.threshold(gaitFrame,
                                                    100,
                                                    1,
                                                    cv2.THRESH_BINARY)
@@ -71,4 +77,4 @@ class GaitSeq:
                         cv2.imshow('duanxx', gaitFrame)
                         cv2.waitKey(1)
 
-                    self.gaitSeq.append(Gait(gaitFrame))
+                    self.gaitSeq.append(Gait(gaitFrameBinary))
