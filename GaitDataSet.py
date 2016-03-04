@@ -8,21 +8,13 @@ from GaitSeq import GaitSeq
 import os
 
 class GaitDataSet:
-    """
-
-    """
-
-    _gaitDataSetPath = ''
-    _numGaitSeq = 0
-
-    data = []
 
     def __init__(self):
-        """
+        self._gaitDataSetPath = ""
+        self._numGaitSeq = 0
 
-        :param gaitDataSetPath:
-        :return:
-        """
+        self.data = []
+
 
     def loadDataSet(self, dataSetFilePath):
         """
@@ -47,8 +39,8 @@ class GaitDataSet:
             elif os.path.basename(root) == 'silhouettes':
                 continue
             else:
-
                 self.data.append(GaitSeq(root))
-                print self.data[self._numGaitSeq]._gaitSeqFilePath
                 self._numGaitSeq += 1
-                raw_input()
+
+                if self._numGaitSeq == 10:
+                    break
