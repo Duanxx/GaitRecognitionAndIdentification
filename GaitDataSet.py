@@ -15,8 +15,7 @@ class GaitDataSet:
 
         self.data = []
 
-
-    def loadDataSet(self, dataSetFilePath):
+    def loadDataSet(self, dataSetFilePath,  showImage=False, loadNum=10):
         """
 
         :param dataSetFilePath:
@@ -31,16 +30,23 @@ class GaitDataSet:
             self._gaitDataSetPath = dataSetFilePath
             print dataSetFilePath
 
-    def findAllFiles(self,showImage=False):
+        self.findAllFiles(showImage=showImage,loadNum=loadNum)
+
+    def findAllFiles(self, showImage=False, loadNum=10):
         for root, dirs, files in os.walk(self._gaitDataSetPath):
+
+            rootInList = root.split('/')
 
             if len(files) == 0:
                 continue
             elif os.path.basename(root) == 'silhouettes':
                 continue
-            else:
+            elif rootInList[-1] == '090' and \
+                    rootInList[-2] in ['nm-01', 'nm-02']:
+
                 self.data.append(GaitSeq(root, showImage))
+                print root, '\t', len(self.data[-1].gaitSeq)
                 self._numGaitSeq += 1
 
-                if self._numGaitSeq == 1:
+                if self._numGaitSeq == loadNum:
                     break

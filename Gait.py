@@ -17,7 +17,7 @@ class Gait:
         self._heightStart = 0
         self._heightEnd = 0
         self._height = 0.0
-        self._step = 0.0
+        self.step = 0.0
         self._gaitImageFrame = gaitImageFrame.copy()
 
         self.extractGaitHight()
@@ -37,6 +37,11 @@ class Gait:
             startIndex, endIndex = self.findFirstAndLastNotZeroValueIndex(row)
             self.widthVector.append(endIndex - startIndex)
 
+        # force convert to int, save the memory
+        self.step = int(np.amax(self.widthVector[
+                                 self._heightEnd - int(self._height/4):
+                                 self._heightEnd]))
+
     def extractGaitHight(self):
         verticalSum = np.sum(self._gaitImageFrame, 1)
         
@@ -45,10 +50,6 @@ class Gait:
 
         self._height = self._heightEnd - self._heightStart
 
-        # force convert to int, save the memory
-        self._step = int(np.amax(verticalSum[
-                                 self._heightEnd - int(self._height/3):
-                                 self._heightEnd]))
 
     def findFirstAndLastNotZeroValueIndex(self, inputList):
         inputLen = len(inputList)

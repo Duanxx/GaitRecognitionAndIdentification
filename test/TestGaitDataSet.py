@@ -18,9 +18,9 @@ gds.findAllFiles()
 
 print gds._numGaitSeq
 
+for gait in gds.data[0].gaitSeq:
+    plt.plot(gait.widthVector)
 
-for index in xrange(100):
-    print gds.data[index]._gaitIndex
+print len(gait.widthVector)
 
-cv2.imshow('duanxx', gds.data[0].gaitSeq[0]._gaitImageFrame)
-cv2.waitKey()
+plt.show()

@@ -31,6 +31,14 @@ class GaitSeq:
         self.gaitSeqAngle = ''
 
         self.loadGaitSeq(showImage)
+        self.loadStepSeq()
+
+    def information(self):
+        print 'gaitSeqID = \t', self.gaitSeqID
+        print 'gaitSeqWear = \t', self.gaitSeqWear
+        print 'gaitSeqWearID = ', self.gaitSeqWearID
+        print 'gaitSeqAngle = \t', self.gaitSeqAngle
+        print
 
     def extractGaitSeqProfile(self, GaitSeqRootFilePath):
 
@@ -78,3 +86,8 @@ class GaitSeq:
                         cv2.waitKey(1)
 
                     self.gaitSeq.append(Gait(gaitFrameBinary))
+
+    def loadStepSeq(self):
+
+        for gait in self.gaitSeq:
+            self.stepSeq.append(gait.step)
