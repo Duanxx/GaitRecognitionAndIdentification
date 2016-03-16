@@ -30,7 +30,7 @@ class GaitDataSet:
             self._gaitDataSetPath = dataSetFilePath
             print dataSetFilePath
 
-        self.findAllFiles(showImage=showImage,loadNum=loadNum)
+        self.findAllFiles(showImage=showImage, loadNum=loadNum)
 
     def findAllFiles(self, showImage=False, loadNum=10):
         for root, dirs, files in os.walk(self._gaitDataSetPath):

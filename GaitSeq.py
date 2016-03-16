@@ -9,20 +9,22 @@ import cv2
 import numpy as np
 
 from Gait import Gait
+from GaitStepSeqFilter import GaitStepSeqFilter
 
-class GaitSeq:
+class GaitSeq():
 
     def __init__(self, gaitSeqFilePath,showImage=False):
         """
 
         :return:
         """
+
         self._gaitSeqFilePath = gaitSeqFilePath
         self._gaitIndex = []
 
         self.gaitSeq = []
         self.stepSeq = []
-        self.smoothedStepSeq = []
+        self.stepSeqSmoothed = []
         self.standAndStraddle = []
 
         self.gaitSeqID = ''
@@ -32,6 +34,7 @@ class GaitSeq:
 
         self.loadGaitSeq(showImage)
         self.loadStepSeq()
+        self.loadStepSeqSmoothed()
 
     def information(self):
         print 'gaitSeqID = \t', self.gaitSeqID
@@ -91,3 +94,14 @@ class GaitSeq:
 
         for gait in self.gaitSeq:
             self.stepSeq.append(gait.step)
+
+    def loadStepSeqSmoothed(self):
+        gssf = GaitStepSeqFilter()
+
+        if len(self.stepSeq) < 1:
+            raise Exception('the length of stepSeq is less than 1')
+        else:
+            self.stepSeqSmoothed = gssf.smooth(np.array(self.stepSeq))
+
+    def findGaitSeqPeaks(self):
+        pass
