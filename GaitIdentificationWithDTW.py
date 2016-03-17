@@ -35,7 +35,6 @@ print dataSetLen
 
 distanceMatrix = []
 
-
 """
     TO DO
         smooth of step sequence

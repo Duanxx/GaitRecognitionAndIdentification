@@ -10,6 +10,8 @@ import numpy as np
 
 from Gait import Gait
 from GaitStepSeqFilter import GaitStepSeqFilter
+from scipy.signal import find_peaks_cwt
+
 
 class GaitSeq():
 
@@ -24,8 +26,8 @@ class GaitSeq():
 
         self.gaitSeq = []
         self.stepSeq = []
-        self.stepSeqSmoothed = []
-        self.standAndStraddle = []
+        self.standGaits = []
+        self.straddleGaits = []
 
         self.gaitSeqID = ''
         self.gaitSeqWear = ''
@@ -34,9 +36,9 @@ class GaitSeq():
 
         self.loadGaitSeq(showImage)
         self.loadStepSeq()
-        self.loadStepSeqSmoothed()
+        self.loadStandAndStraddleGait()
 
-    def information(self):
+    def printInformation(self):
         print 'gaitSeqID = \t', self.gaitSeqID
         print 'gaitSeqWear = \t', self.gaitSeqWear
         print 'gaitSeqWearID = ', self.gaitSeqWearID
@@ -100,8 +102,39 @@ class GaitSeq():
 
         if len(self.stepSeq) < 1:
             raise Exception('the length of stepSeq is less than 1')
+            return []
         else:
-            self.stepSeqSmoothed = gssf.smooth(np.array(self.stepSeq))
+            return gssf.smooth(np.array(self.stepSeq))
 
-    def findGaitSeqPeaks(self):
-        pass
+    def loadStandAndStraddleGait(self):
+
+        smoothedGaitSeq = self.loadStepSeqSmoothed()
+
+        straddleGaitTemp = find_peaks_cwt(smoothedGaitSeq, np.arange(1, 4))
+        standGaitTemp = find_peaks_cwt(-smoothedGaitSeq, np.arange(1, 4))
+
+        # check the straddle and stand gait
+        straddleGaitLen = len(straddleGaitTemp)
+        standGaitLen = len(standGaitTemp)
+
+        self.straddleGaits.append(straddleGaitTemp[0])
+
+        if straddleGaitLen >= 2:
+            straddleGaitTempDiff = np.array(straddleGaitTemp[1:]) -\
+                                   np.array(straddleGaitTemp[:-1])
+
+            for index in range(1, straddleGaitLen):
+                if straddleGaitTempDiff[index - 1] < 4:
+                    self.straddleGaits.pop()
+                self.straddleGaits.append(straddleGaitTemp[index])
+
+        self.standGaits.append(standGaitTemp[0])
+
+        if standGaitLen >= 2:
+            standGaitTempDiff = np.array(standGaitTemp[1:]) -\
+                                np.array(standGaitTemp[:-1])
+
+            for index in range(1, standGaitLen):
+                if standGaitTempDiff[index - 1] < 4:
+                    self.standGaits.pop()
+                self.standGaits.append(standGaitTemp[index])

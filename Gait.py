@@ -18,11 +18,15 @@ class Gait:
         self._heightEnd = 0
         self._height = 0.0
         self.step = 0.0
+        self.centerRow = 0
+        self.centerCol = 0
         self._gaitImageFrame = gaitImageFrame.copy()
 
         self.extractGaitHight()
 
         self.extractWidthVector()
+
+        self.calcCenterXY()
 
         self._gaitImageFrame = []
 
@@ -76,3 +80,13 @@ class Gait:
                 break
 
         return startIndex, endIndex
+
+    def calcCenterXY(self):
+
+        ImageFrameSize = self._gaitImageFrame.shape
+
+        for rowindex in range(ImageFrameSize[0]):
+            for colindex in range(ImageFrameSize[1]):
+                """
+                    TO DO centerRow and centerCOl
+                """
