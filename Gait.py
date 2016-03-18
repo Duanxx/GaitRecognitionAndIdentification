@@ -47,14 +47,14 @@ class Gait:
         self.centerCol = 0
         self._gaitImageFrame = gaitImageFrame.copy()  # a copy of input gait
 
+        # get the center of gait
+        self.calcCenter()
+
         # first get the height of a gait
         self.extractGaitHeight()
 
         # get the width vector
         self.extractWidthVector()
-
-        # get the center of gait
-        self.calcCenter()
 
         self._gaitImageFrame = []
 
@@ -73,6 +73,18 @@ class Gait:
         for row in self._gaitImageFrame:
             startIndex, endIndex = self.findFirstAndLastNonZeroValueIndex(row)
             self.widthVector.append(endIndex - startIndex)
+
+            if self.widthVector[-1] == 0:
+                self.widthVectorRight.append(0)
+                self.widthVectorLeft.append(0)
+            else:
+                self.widthVectorLeft.append(int(self.centerCol - startIndex))
+                if self.widthVectorLeft[-1] < 0:
+                    self.widthVectorLeft[-1] = 0
+
+                self.widthVectorRight.append(int(endIndex - self.centerCol))
+                if self.widthVectorRight[-1] < 0:
+                    self.widthVectorRight[-1] = 0
 
         # only take the 1/4 lower part of the gait into consideration
         # the maximum widthVector who is in consideration is the step
