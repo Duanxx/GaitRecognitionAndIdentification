@@ -5,6 +5,7 @@
 '''
 
 import os
+import csv
 
 class GaitFeaturesSet:
 
@@ -35,10 +36,3 @@ class GaitFeaturesSet:
             print 'There is something wrong with gaitDataSet'
         else:
             print 'gaitDataSet is OK !'
-
-
-
-
-
-    def findAllFeatures(self, loadNum = 10):
-        pass

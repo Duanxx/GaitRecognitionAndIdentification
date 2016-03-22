@@ -149,6 +149,8 @@ class Gait:
             the center of gait image
         :return:
         """
+        # the matrix estimation of image is applied to calculate the center
+        # of gait
         gaitmoment = cv2.moments(self._gaitImageFrame)
 
         self.centerRow = int(gaitmoment['m01']/gaitmoment['m00'])

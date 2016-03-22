@@ -9,7 +9,6 @@ from matplotlib import pyplot as plt
 
 from scipy.signal import argrelmin
 from scipy.signal import find_peaks_cwt
-from scipy.signal import spline_filter
 
 import numpy as np
 
@@ -43,7 +42,6 @@ distanceMatrix = []
 """
 
 gssf = GaitStepSeqFilter()
-
 
 plt.figure(1)
 
