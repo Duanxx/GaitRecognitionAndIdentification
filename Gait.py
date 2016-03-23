@@ -50,11 +50,14 @@ class Gait:
         # get the center of gait
         self.calcCenter()
 
-        # first get the height of a gait
-        self.extractGaitHeight()
+        # if centerRow and centerCol equal to zero ,this is an empty image
+        if self.centerCol != 0 and self.widthVector != 0:
 
-        # get the width vector
-        self.extractWidthVector()
+            # first get the height of a gait
+            self.extractGaitHeight()
+
+            # get the width vector
+            self.extractWidthVector()
 
         self._gaitImageFrame = []
 
@@ -89,6 +92,7 @@ class Gait:
         # only take the 1/4 lower part of the gait into consideration
         # the maximum widthVector who is in consideration is the step
         # force convert to int, save the memory
+
         self.step = int(np.amax(self.widthVector[
                                  self._heightEnd - int(self._height/4):
                                  self._heightEnd]))
@@ -153,5 +157,9 @@ class Gait:
         # of gait
         gaitmoment = cv2.moments(self._gaitImageFrame)
 
-        self.centerRow = int(gaitmoment['m01']/gaitmoment['m00'])
-        self.centerCol = int(gaitmoment['m10']/gaitmoment['m00'])
+        if gaitmoment['m00'] == 0:
+            self.centerCol = 0
+            self.centerRow = 0
+        else:
+            self.centerRow = int(gaitmoment['m01']/gaitmoment['m00'])
+            self.centerCol = int(gaitmoment['m10']/gaitmoment['m00'])

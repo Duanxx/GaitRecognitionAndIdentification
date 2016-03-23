@@ -35,8 +35,8 @@ class GaitSeq():
         self.gaitSeqAngle = ''
 
         self.loadGaitSeq(showImage)
-        self.loadStepSeq()
-        self.loadStandAndStraddleGait()
+        #self.loadStepSeq()
+        #self.loadStandAndStraddleGait()
 
     def printInformation(self):
         print 'gaitSeqID = \t', self.gaitSeqID
@@ -90,7 +90,11 @@ class GaitSeq():
                         cv2.imshow('duanxx', gaitFrame)
                         cv2.waitKey(1)
 
-                    self.gaitSeq.append(Gait(gaitFrameBinary))
+                    gait = Gait(gaitFrameBinary)
+
+                    # if image is empty , drop this image
+                    if gait.centerCol != 0 and gait.centerRow != 0:
+                        self.gaitSeq.append(gait)
 
     def loadStepSeq(self):
 

@@ -14,6 +14,7 @@ class GaitDataSet:
     def __init__(self):
         self._gaitDataSetPath = ""
         self._numGaitSeq = 0
+        self._totalInstance = 124*6
 
         self.data = []
 
@@ -44,15 +45,18 @@ class GaitDataSet:
             elif os.path.basename(root) == 'silhouettes':
                 continue
             elif rootInList[-1] == '090' and \
-                    rootInList[-2] in ['nm-01', 'nm-02']:
+                 rootInList[-2].split('-')[0] == 'nm':
 
                 gaitSeq = GaitSeq(root, showImage)
 
                 #self.data.append(gaitSeq)
-                self.saveGaitSeqAsCSV(gaitSeq)
+                filePath = self.saveGaitSeqAsCSV(gaitSeq)
 
                 #print root, '\t', len(self.data[-1].gaitSeq)
                 self._numGaitSeq += 1
+
+                print format(self._numGaitSeq*1.0/self._totalInstance, '.2%'),\
+                    '\t', filePath
 
                 if self._numGaitSeq == loadNum:
                     break
@@ -74,8 +78,6 @@ class GaitDataSet:
         filePath = "/home/Duanxx/Documents/GraduateDesign/gait_dataset/CASIA" \
             "/DatasetB/silhouettesFeatures/" + fileName
 
-        print filePath
-
         with open(filePath, 'wb') as gaitSeqFile:
             gaitSeqWriter = csv.writer(gaitSeqFile)
 
@@ -84,9 +86,11 @@ class GaitDataSet:
                                gaitSeq.straddleGaits + ['*'] +\
                                gaitSeq.stepSeq
 
-            gaitSeqWriter.writerow(gaitSeqAttriList)
+            #gaitSeqWriter.writerow(gaitSeqAttriList)
 
             for gait in gaitSeq.gaitSeq:
                 gaitSeqWriter.writerow(gait.widthVector +
                                        gait.widthVectorLeft +
                                        gait.widthVectorRight)
+
+        return filePath

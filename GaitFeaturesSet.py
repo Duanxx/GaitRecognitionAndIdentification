@@ -36,3 +36,29 @@ class GaitFeaturesSet:
             print 'There is something wrong with gaitDataSet'
         else:
             print 'gaitDataSet is OK !'
+
+    def featureSetFileNumTest(self, featureSetFilePath):
+
+        fileList = os.listdir(featureSetFilePath)
+
+        print 124*6
+
+        print len(fileList)
+
+        featureFileCounter = [0]*124
+
+        for featureFile in fileList:
+            featureFileInList = featureFile.split('_')
+            print featureFile, int(featureFileInList[0])
+
+            featureFileCounter[int(featureFileInList[0])-1] += 1
+
+        print featureFileCounter
+
+        counter = 0
+        for featureCounter in featureFileCounter:
+            if featureCounter < 6:
+                print featureCounter, counter
+
+            counter += 1
+
