@@ -11,11 +11,11 @@ import numpy as np
 from Gait import Gait
 from GaitStepSeqFilter import GaitStepSeqFilter
 from scipy.signal import find_peaks_cwt
-
+import csv
 
 class GaitSeq():
 
-    def __init__(self, gaitSeqFilePath,showImage=False):
+    def __init__(self, gaitSeqFilePath):
         """
 
         :return:
@@ -34,9 +34,6 @@ class GaitSeq():
         self.gaitSeqWearID = ''
         self.gaitSeqAngle = ''
 
-        self.loadGaitSeq(showImage)
-        #self.loadStepSeq()
-        #self.loadStandAndStraddleGait()
 
     def printInformation(self):
         print 'gaitSeqID = \t', self.gaitSeqID
@@ -52,7 +49,7 @@ class GaitSeq():
         self.gaitSeqWearID = GaitSeqRootFilePath.split('/')[-2].split('-')[1]
         self.gaitSeqAngle = GaitSeqRootFilePath.split('/')[-1]
 
-    def loadGaitSeq(self, showImage=False):
+    def loadGaitSeqFromGaitImages(self, showImage=False):
         """
             get the file path of gait sequence
         :return: gaitFilePath []
@@ -95,6 +92,14 @@ class GaitSeq():
                     # if image is empty , drop this image
                     if gait.centerCol != 0 and gait.centerRow != 0:
                         self.gaitSeq.append(gait)
+
+    def loadGaitSeqFromGaitFeatures(self):
+        """
+        :return:
+        """
+        gaitReader = csv.reader(self._gaitSeqFilePath)
+
+
 
     def loadStepSeq(self):
 

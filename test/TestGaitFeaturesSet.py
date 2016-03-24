@@ -1,12 +1,15 @@
 '''
-@file    : TestGaitFeaturesSet.py
-@time    : Mar 15,2016 16:55
+@file    : TestGaitFeatureSet.py
+@time    : Mar 23,2016 13:07
 @author  : duanxxnj@163.com
 '''
 
-# Test for saveFeaturesSet(self, gaitDataSet, FeaturesSetPath)
-"""
-    test gaitDataSet is not a instance of gaitDataSet
-    test gaitDataSet is empty
-    test FeaturesSetPath is wrong
-"""
+from GaitFeaturesSet import GaitFeaturesSet
+
+gfs = GaitFeaturesSet()
+
+#gfs.featureSetFileNumTest('/home/Duanxx/Documents/GraduateDesign/gait_dataset/'
+                          #'CASIA/DatasetB/silhouettesFeatures/nm')
+
+gfs.loadFeaturesSet('/home/Duanxx/Documents/GraduateDesign/gait_dataset/'
+                          'CASIA/DatasetB/silhouettesFeatures/nm', 'nm')
