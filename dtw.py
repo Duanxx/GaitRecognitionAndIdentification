@@ -11,6 +11,7 @@ def dtwGaitSeq(gaitSeqx, gaitSeqy, dist):
 
     return dtw(x, y, dist)
 
+
 def dtw(x, y, dist):
     """
     Computes Dynamic Time Warping (DTW) of two sequences.
